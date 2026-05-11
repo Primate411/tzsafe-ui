@@ -1,8 +1,9 @@
 import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+import { BeaconEvent, BeaconWallet } from "@taquito/beacon-wallet";
 import { LocalStorage, NetworkType } from "@tezos-x/octez.connect-sdk";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useReducer, useEffect, useState } from "react";
@@ -162,23 +163,6 @@ export default function App({ Component, pageProps }: AppProps) {
         let a = init();
         dispatch({ type: "init", payload: a });
 
-        const p2pClient = new P2PClient({
-          name: "TzSafe",
-          storage: new LocalStorage("P2P"),
-        });
-
-        await p2pClient.init();
-        await p2pClient.connect(p2pClient.handleMessages);
-
-        // Connect stored peers
-        Object.entries(a.connectedDapps).forEach(async ([address, dapps]) => {
-          Object.values(dapps).forEach(data => {
-            p2pClient
-              .addPeer(data)
-              .catch(_ => console.log("Failed to connect to peer", data));
-          });
-        });
-
         const wallet = new BeaconWallet({
           name: "TzSafe",
           network: {
@@ -188,8 +172,12 @@ export default function App({ Component, pageProps }: AppProps) {
           storage: new LocalStorage("WALLET"),
         });
 
+        await wallet.client.subscribeToEvent(
+          BeaconEvent.ACTIVE_ACCOUNT_SET,
+          () => {}
+        );
+
         dispatch!({ type: "beaconConnect", payload: wallet });
-        dispatch!({ type: "p2pConnect", payload: p2pClient });
 
         if (state.attemptedInitialLogin) return;
 
@@ -216,6 +204,39 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [state.beaconWallet]);
 
   useEffect(() => {
+    (async () => {
+      if (state.p2pClient !== null) return;
+
+      const hasConnectedDapps = Object.values(state.connectedDapps).some(
+        dapps => Object.keys(dapps).length > 0
+      );
+      const shouldConnectP2P =
+        !!data || !!state.currentContract || hasConnectedDapps;
+
+      if (!shouldConnectP2P) return;
+
+      const p2pClient = new P2PClient({
+        name: "TzSafe",
+        storage: new LocalStorage("P2P"),
+      });
+
+      await p2pClient.init();
+      await p2pClient.connect(p2pClient.handleMessages);
+
+      // Connect stored peers only when the wallet side of TzSafe is needed.
+      Object.entries(state.connectedDapps).forEach(async ([address, dapps]) => {
+        Object.values(dapps).forEach(data => {
+          p2pClient
+            .addPeer(data)
+            .catch(_ => console.log("Failed to connect to peer", data));
+        });
+      });
+
+      dispatch!({ type: "p2pConnect", payload: p2pClient });
+    })();
+  }, [data, state.connectedDapps, state.currentContract, state.p2pClient]);
+
+  useEffect(() => {
     setHasSidebar(false);
   }, [path]);
 
@@ -227,53 +248,61 @@ export default function App({ Component, pageProps }: AppProps) {
       path === "/address-book");
 
   return (
-    <AppStateContext.Provider value={state}>
-      <AppDispatchContext.Provider value={dispatch}>
-        <AliasesProvider aliasesFromState={state.aliases}>
-          <div className="relative min-h-screen">
-            <div id="modal" />
-            {!!data && (
-              <LoginModal
-                data={data}
-                onEnd={() => {
-                  setData(undefined);
-                }}
-              />
-            )}
-            <PoeModal />
-            <NavBar />
-
-            {isSidebarHidden ? null : (
-              <Sidebar
-                isOpen={hasSidebar}
-                onClose={() => setHasSidebar(false)}
-                isLoading={isFetching}
-              />
-            )}
-
-            <div className={`pb-28 pt-20 ${isSidebarHidden ? "" : "md:pl-72"}`}>
-              <button
-                className="ml-4 mt-4 flex items-center space-x-2 text-zinc-300 md:hidden"
-                onClick={() => {
-                  setHasSidebar(true);
-                }}
-              >
-                <span className="text-xs">Open sidebar</span>
-                <ArrowRightIcon className="h-4 w-4" />
-              </button>
-
-              {isFetching || !state.attemptedInitialLogin ? (
-                <div className="mt-12 flex w-full items-center justify-center">
-                  <Spinner />
-                </div>
-              ) : (
-                <Component {...pageProps} />
+    <>
+      <Head>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href={`${router.basePath}/favicon.ico`} />
+      </Head>
+      <AppStateContext.Provider value={state}>
+        <AppDispatchContext.Provider value={dispatch}>
+          <AliasesProvider aliasesFromState={state.aliases}>
+            <div className="relative min-h-screen">
+              <div id="modal" />
+              {!!data && (
+                <LoginModal
+                  data={data}
+                  onEnd={() => {
+                    setData(undefined);
+                  }}
+                />
               )}
+              <PoeModal />
+              <NavBar />
+
+              {isSidebarHidden ? null : (
+                <Sidebar
+                  isOpen={hasSidebar}
+                  onClose={() => setHasSidebar(false)}
+                  isLoading={isFetching}
+                />
+              )}
+
+              <div
+                className={`pb-28 pt-20 ${isSidebarHidden ? "" : "md:pl-72"}`}
+              >
+                <button
+                  className="ml-4 mt-4 flex items-center space-x-2 text-zinc-300 md:hidden"
+                  onClick={() => {
+                    setHasSidebar(true);
+                  }}
+                >
+                  <span className="text-xs">Open sidebar</span>
+                  <ArrowRightIcon className="h-4 w-4" />
+                </button>
+
+                {isFetching || !state.attemptedInitialLogin ? (
+                  <div className="mt-12 flex w-full items-center justify-center">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Component {...pageProps} />
+                )}
+              </div>
+              <Footer shouldRemovePadding={isSidebarHidden} />
             </div>
-            <Footer shouldRemovePadding={isSidebarHidden} />
-          </div>
-        </AliasesProvider>
-      </AppDispatchContext.Provider>
-    </AppStateContext.Provider>
+          </AliasesProvider>
+        </AppDispatchContext.Provider>
+      </AppStateContext.Provider>
+    </>
   );
 }
