@@ -1,3 +1,4 @@
+import { char2Bytes, bytes2Char, num2PaddedHex } from "@/utils/taquitoCompat";
 import {
   emitMicheline,
   Parser,
@@ -12,7 +13,6 @@ import {
   WalletContract,
   WalletOperationBatch,
 } from "@taquito/taquito";
-import { char2Bytes, bytes2Char, num2PaddedHex } from "@/utils/taquitoCompat";
 import { BigNumber } from "bignumber.js";
 import { fa1_2Token } from "../components/FA1_2";
 import { fa2Token } from "../components/FA2Transfer";

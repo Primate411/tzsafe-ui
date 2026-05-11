@@ -1,7 +1,7 @@
-import { SigningType } from "@tezos-x/octez.connect-sdk";
+import { buf2hex, hex2buf } from "@/utils/taquitoCompat";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { Signer } from "@taquito/taquito";
-import { buf2hex, hex2buf } from "@/utils/taquitoCompat";
+import { SigningType } from "@tezos-x/octez.connect-sdk";
 
 // The purpose of this Signer is to create the SPoE signature
 // So it only works with signing operations

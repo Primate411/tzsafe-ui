@@ -1,4 +1,3 @@
-import { AccountInfo, getSenderId } from "@tezos-x/octez.connect-sdk";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { PollingSubscribeProvider, TezosToolkit } from "@taquito/taquito";
 import { Tzip12Module } from "@taquito/tzip12";
@@ -9,6 +8,7 @@ import {
   TezosStorageHandler,
   Tzip16Module,
 } from "@taquito/tzip16";
+import { AccountInfo, getSenderId } from "@tezos-x/octez.connect-sdk";
 import BigNumber from "bignumber.js";
 import { Context, createContext, Dispatch } from "react";
 import { contractStorage } from "../types/app";

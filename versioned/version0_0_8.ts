@@ -1,3 +1,4 @@
+import { char2Bytes, bytes2Char } from "@/utils/taquitoCompat";
 import { Parser, emitMicheline } from "@taquito/michel-codec";
 import { PreapplyParams } from "@taquito/rpc";
 import {
@@ -6,7 +7,6 @@ import {
   WalletContract,
   WalletOperationBatch,
 } from "@taquito/taquito";
-import { char2Bytes, bytes2Char } from "@/utils/taquitoCompat";
 import { BigNumber } from "bignumber.js";
 import { DEFAULT_TIMEOUT } from "../context/config";
 import { generateFA2Michelson } from "../context/generateLambda";

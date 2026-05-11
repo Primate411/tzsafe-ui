@@ -1,5 +1,5 @@
-import { PlusIcon } from "@radix-ui/react-icons";
 import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
+import { PlusIcon } from "@radix-ui/react-icons";
 import BigNumber from "bignumber.js";
 import { Field, FieldProps, useFormikContext } from "formik";
 import {

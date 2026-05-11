@@ -1,10 +1,10 @@
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
-import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import {
   validateContractAddress,
   ValidationResult,
   validateAddress,
 } from "@/utils/taquitoCompat";
+import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
+import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import BigNumber from "bignumber.js";
 import {
   Field,

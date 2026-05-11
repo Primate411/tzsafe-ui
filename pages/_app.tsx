@@ -1,7 +1,7 @@
-import { LocalStorage, NetworkType } from "@tezos-x/octez.connect-sdk";
+import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { BeaconWallet } from "@taquito/beacon-wallet";
-import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
+import { LocalStorage, NetworkType } from "@tezos-x/octez.connect-sdk";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";

@@ -1,5 +1,5 @@
-import { getSenderId } from "@tezos-x/octez.connect-sdk";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { getSenderId } from "@tezos-x/octez.connect-sdk";
 import bs58check from "bs58check";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";

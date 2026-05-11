@@ -1,3 +1,4 @@
+import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
 import { Parser, unpackDataBytes, MichelsonType } from "@taquito/michel-codec";
 import { Schema } from "@taquito/michelson-encoder";
 import { PreapplyParams } from "@taquito/rpc";
@@ -6,7 +7,6 @@ import {
   WalletContract,
   WalletOperationBatch,
 } from "@taquito/taquito";
-import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
 import { BigNumber } from "bignumber.js";
 import { TZKT_API_URL } from "../context/config";
 import { proofOfEventSchema as proposalSchema_0_3_1 } from "../types/Proposal0_3_1";

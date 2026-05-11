@@ -1,3 +1,4 @@
+import { stringToBytes, bytesToString } from "@/utils/taquitoCompat";
 import { emitMicheline } from "@taquito/michel-codec";
 import {
   WalletContract,
@@ -5,7 +6,6 @@ import {
   WalletOperationBatch,
   OpKind,
 } from "@taquito/taquito";
-import { stringToBytes, bytesToString } from "@/utils/taquitoCompat";
 import { BigNumber } from "bignumber.js";
 import { content, contractStorage as c1 } from "../types/Proposal0_3_4";
 import { contractStorage } from "../types/app";

@@ -1,6 +1,10 @@
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
+import {
+  validateAddress,
+  ValidationResult,
+  char2Bytes,
+} from "@/utils/taquitoCompat";
 import { Parser } from "@taquito/michel-codec";
-import { validateAddress, ValidationResult, char2Bytes } from "@/utils/taquitoCompat";
+import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import {
   ErrorMessage,
   Field,

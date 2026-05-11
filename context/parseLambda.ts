@@ -1,4 +1,3 @@
-import { Expr, Prim, IntLiteral, emitMicheline } from "@taquito/michel-codec";
 import {
   encodePubKey,
   encodeKeyHash,
@@ -6,6 +5,7 @@ import {
   ValidationResult,
   bytes2Char,
 } from "@/utils/taquitoCompat";
+import { Expr, Prim, IntLiteral, emitMicheline } from "@taquito/michel-codec";
 import { version } from "../types/display";
 import { decodeB58, toRightAssociativePairData } from "../utils/contractParam";
 import { isListOperation } from "../versioned/util";

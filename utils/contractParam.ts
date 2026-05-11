@@ -1,3 +1,9 @@
+import {
+  validateAddress,
+  encodePubKey,
+  encodeKey,
+  encodeKeyHash,
+} from "@/utils/taquitoCompat";
 import { emitMicheline, Parser, Expr } from "@taquito/michel-codec";
 import { TokenSchema, Schema } from "@taquito/michelson-encoder";
 import {
@@ -5,12 +11,6 @@ import {
   ContractProvider,
   MichelsonMap,
 } from "@taquito/taquito";
-import {
-  validateAddress,
-  encodePubKey,
-  encodeKey,
-  encodeKeyHash,
-} from "@/utils/taquitoCompat";
 import { assertNever } from "assert-never";
 import { BigNumber } from "bignumber.js";
 import { generateExecuteContractMichelson } from "../context/generateLambda";
