@@ -40,7 +40,7 @@ docker run -p 8080:80 tzsafe
 When building the application you can specify which node and which network you want to use:
 
 ```bash
-docker build --build-arg="PUBLIC_RPC_URL=https://mainnet.tezos.marigold.dev" -t tzsafe .
+docker build --build-arg="PUBLIC_RPC_URL=https://rpc.tzkt.io/mainnet" -t tzsafe .
 ```
 
 You can override:

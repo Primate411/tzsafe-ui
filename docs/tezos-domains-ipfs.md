@@ -5,7 +5,7 @@ This fork is configured to build a static TzSafe frontend for Tezos Domains host
 ## Build
 
 ```sh
-NEXT_PUBLIC_RPC_URL=https://mainnet.tezos.marigold.dev/ \
+NEXT_PUBLIC_RPC_URL=https://rpc.tzkt.io/mainnet/ \
 NEXT_PUBLIC_API_URL=https://api.tzkt.io \
 NEXT_PUBLIC_NETWORK_TYPE=mainnet \
 npm run build
