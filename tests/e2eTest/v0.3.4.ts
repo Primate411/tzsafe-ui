@@ -1,5 +1,5 @@
 import { MichelsonMap, TezosToolkit } from "@taquito/taquito";
-import { char2Bytes } from "@taquito/tzip16";
+import { char2Bytes } from "@/utils/taquitoCompat";
 import BigNumber from "bignumber.js";
 import { describe, expect, it, beforeAll } from "vitest";
 import { proposal } from "../../types/Proposal0_3_4";

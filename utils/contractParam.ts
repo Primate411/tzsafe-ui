@@ -10,7 +10,7 @@ import {
   encodePubKey,
   encodeKey,
   encodeKeyHash,
-} from "@taquito/utils";
+} from "@/utils/taquitoCompat";
 import { assertNever } from "assert-never";
 import { BigNumber } from "bignumber.js";
 import { generateExecuteContractMichelson } from "../context/generateLambda";

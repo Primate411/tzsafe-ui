@@ -1,0 +1,80 @@
+name: Build and publish IPFS
+
+on:
+  push:
+    branches:
+      - primate/tzsafe-tez-page
+      - mainnet
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NEXT_PUBLIC_RPC_URL: "https://mainnet.tezos.marigold.dev/"
+  NEXT_PUBLIC_API_URL: "https://api.tzkt.io"
+  NEXT_PUBLIC_NETWORK_TYPE: "mainnet"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static app
+        run: npm run build
+
+      - name: Upload static export artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tzsafe-static-export
+          path: out
+
+  publish-ipfs:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Download static export artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tzsafe-static-export
+          path: out
+
+      - name: Upload to IPFS through Pinata
+        id: ipfs
+        run: node script/upload-ipfs.mjs out
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+          PINATA_NAME: tzsafe-ui
+
+      - name: Save CID artifact
+        run: |
+          echo "${{ steps.ipfs.outputs.cid }}" > ipfs-cid.txt
+          echo "${{ steps.ipfs.outputs.content_url }}" > tezos-domains-content-url.txt
+
+      - name: Upload CID artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tzsafe-ipfs-cid
+          path: |
+            ipfs-cid.txt
+            tezos-domains-content-url.txt

@@ -1,4 +1,4 @@
-import { validateAddress } from "@taquito/utils";
+import { validateAddress } from "@/utils/taquitoCompat";
 import {
   ErrorMessage,
   Field,

@@ -1,5 +1,5 @@
 import { tzip16 } from "@taquito/tzip16";
-import { validateContractAddress } from "@taquito/utils";
+import { validateContractAddress } from "@/utils/taquitoCompat";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";

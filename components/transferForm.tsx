@@ -1,10 +1,10 @@
-import { NetworkType } from "@airgap/beacon-sdk";
+import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import {
   validateContractAddress,
   ValidationResult,
   validateAddress,
-} from "@taquito/utils";
+} from "@/utils/taquitoCompat";
 import BigNumber from "bignumber.js";
 import {
   Field,

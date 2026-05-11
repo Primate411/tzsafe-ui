@@ -1,4 +1,4 @@
-import { NetworkType } from "@airgap/beacon-sdk";
+import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import * as Switch from "@radix-ui/react-switch";
 import BigNumber from "bignumber.js";

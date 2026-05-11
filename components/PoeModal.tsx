@@ -7,14 +7,14 @@ import {
   SignPayloadRequest,
   SimulatedProofOfEventChallengeRequest,
   TezosOperationType,
-} from "@airgap/beacon-sdk";
+} from "@tezos-x/octez.connect-sdk";
 import { Checkbox } from "@ariakit/react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import * as Switch from "@radix-ui/react-switch";
 import { emitMicheline, Parser, Expr } from "@taquito/michel-codec";
 import { Schema } from "@taquito/michelson-encoder";
 import { tzip16 } from "@taquito/tzip16";
-import { validateAddress, ValidationResult } from "@taquito/utils";
+import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
 import BigNumber from "bignumber.js";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";

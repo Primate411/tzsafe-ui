@@ -1,7 +1,7 @@
-import { LocalStorage, NetworkType } from "@airgap/beacon-sdk";
+import { LocalStorage, NetworkType } from "@tezos-x/octez.connect-sdk";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { BeaconWallet } from "@taquito/beacon-wallet";
-import { validateAddress, ValidationResult } from "@taquito/utils";
+import { validateAddress, ValidationResult } from "@/utils/taquitoCompat";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import Footer from "../components/footer";
 import NavBar from "../components/navbar";
 import P2PClient from "../context/P2PClient";
 import { AliasesProvider } from "../context/aliases";
-import { PREFERED_NETWORK } from "../context/config";
+import { PREFERED_NETWORK, RPC_URL } from "../context/config";
 import {
   tezosState,
   action,
@@ -181,9 +181,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
         const wallet = new BeaconWallet({
           name: "TzSafe",
-          //@ts-expect-error NetworkType does not match with expected preferredNetwork type (types between Taquito and Beacon doesn't match)
-          preferredNetwork: PREFERED_NETWORK,
-          //@ts-expect-error Beacon beta and taquito's beacon are incompatible, but it's only a type error
+          network: {
+            type: PREFERED_NETWORK,
+            rpcUrl: RPC_URL,
+          },
           storage: new LocalStorage("WALLET"),
         });
 

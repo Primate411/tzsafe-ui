@@ -1,4 +1,4 @@
-import { NetworkType } from "@airgap/beacon-sdk";
+import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import { TezosToolkit } from "@taquito/taquito";
 import { ReactNode } from "react";
 import { transaction } from "../components/RenderProposalContentLambda";

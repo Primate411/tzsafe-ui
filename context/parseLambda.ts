@@ -5,7 +5,7 @@ import {
   validateAddress,
   ValidationResult,
   bytes2Char,
-} from "@taquito/utils";
+} from "@/utils/taquitoCompat";
 import { version } from "../types/display";
 import { decodeB58, toRightAssociativePairData } from "../utils/contractParam";
 import { isListOperation } from "../versioned/util";

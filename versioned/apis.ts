@@ -7,7 +7,7 @@ import {
 } from "@taquito/michel-codec";
 import { ParameterSchema } from "@taquito/michelson-encoder";
 import { MichelsonMap, WalletContract } from "@taquito/taquito";
-import { encodePubKey } from "@taquito/utils";
+import { encodePubKey } from "@/utils/taquitoCompat";
 import { BigNumber } from "bignumber.js";
 import { contractStorage } from "../types/app";
 import { version, proposal } from "../types/display";

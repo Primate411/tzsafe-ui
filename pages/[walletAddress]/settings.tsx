@@ -1,4 +1,4 @@
-import { getSenderId } from "@airgap/beacon-sdk";
+import { getSenderId } from "@tezos-x/octez.connect-sdk";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useMemo, useState } from "react";

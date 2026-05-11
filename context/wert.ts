@@ -1,4 +1,4 @@
-import { NetworkType } from "@airgap/beacon-sdk";
+import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import WertWidget from "@wert-io/widget-initializer";
 import { PREFERED_NETWORK, WERT_ID, WERT_URL } from "./config";
 

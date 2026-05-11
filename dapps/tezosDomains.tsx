@@ -1,7 +1,7 @@
 import { Parser } from "@taquito/michel-codec";
 import { MichelsonMap, Schema } from "@taquito/michelson-encoder";
 import { TezosToolkit } from "@taquito/taquito";
-import { bytes2Char } from "@taquito/tzip16";
+import { bytes2Char } from "@/utils/taquitoCompat";
 import BigNumber from "bignumber.js";
 import React, { ReactNode, useEffect, useState } from "react";
 import { contracts, CustomViewData, CustomView } from ".";

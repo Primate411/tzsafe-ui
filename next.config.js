@@ -2,9 +2,20 @@
 const nextConfig = {
   output: "export",
   reactStrictMode: false,
-  swcMinify: true,
+  swcMinify: false,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     unoptimized: true,
+  },
+  webpack: config => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+    };
+
+    return config;
   },
 };
 

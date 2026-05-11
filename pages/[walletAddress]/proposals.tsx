@@ -1,5 +1,5 @@
 import { tzip16 } from "@taquito/tzip16";
-import { validateContractAddress, ValidationResult } from "@taquito/utils";
+import { validateContractAddress, ValidationResult } from "@/utils/taquitoCompat";
 import { Dispatch, useContext, useEffect, useReducer, useRef } from "react";
 import ProposalCard from "../../components/ProposalCard";
 import Spinner from "../../components/Spinner";
