@@ -1,6 +1,6 @@
 # Publishing TzSafe at tzsafe.tez.page
 
-This fork is configured to build a static TzSafe frontend for Tezos Domains IPFS hosting.
+This fork is configured to build a static TzSafe frontend for Tezos Domains hosting. IPFS is the more decentralized route; GitHub Pages is the simpler hosted route.
 
 ## Build
 
@@ -12,6 +12,22 @@ npm run build
 ```
 
 The static export is written to `out/`.
+
+## Host on GitHub Pages
+
+The **Deploy GitHub Pages** workflow builds the app with:
+
+```text
+NEXT_PUBLIC_BASE_PATH=/tzsafe-ui
+```
+
+That makes the static export work at:
+
+```text
+https://primate411.github.io/tzsafe-ui/
+```
+
+Use this URL in Tezos Domains if you want GitHub Pages as the host.
 
 ## Publish to IPFS
 
@@ -27,11 +43,19 @@ ipfs://<CID>/
 
 In `app.tezos.domains/domain/tzsafe.tez`, choose **Set up website** in the Decentralized Web section.
 
-Select **Serve content**, paste the workflow output as the Content URL, and save:
+For IPFS hosting, select **Serve content**, paste the workflow output as the Content URL, and save:
 
 ```text
 ipfs://<CID>/
 ```
+
+For GitHub Pages forwarding, select **Redirect to a different URL** and use:
+
+```text
+https://primate411.github.io/tzsafe-ui/
+```
+
+You can also try **Serve content** with the same GitHub Pages URL if you want `tzsafe.tez.page` to stay in the browser address bar, but redirect mode is the safer GitHub Pages setup because the app is built for the `/tzsafe-ui/` project path.
 
 After the record is saved, the frontend should be available at:
 
