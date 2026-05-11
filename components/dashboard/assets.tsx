@@ -1,4 +1,5 @@
 import { Defi } from "../../utils/tzktHooks";
+import { TryImg } from "../TryImg";
 
 type AssetsProps = {
   tokens: Defi[];
@@ -12,8 +13,16 @@ const Assets = ({ tokens }: AssetsProps) => {
         {tokens.map((token, i) => {
           return (
             <div key={i} className="mt-2 flex">
-              <img src={token.icon} style={{ width: "24px", height: "24px" }} />
-              <span className="ml-2 font-light">{token.balance}</span>
+              <TryImg
+                src={token.icon}
+                alt={`${token.symbol} token icon`}
+                className="h-6 w-6"
+              />
+              <span className="ml-2 font-light">
+                {token.balance.toLocaleString(undefined, {
+                  maximumFractionDigits: 6,
+                })}
+              </span>
               <span className="ml-2 font-light">{token.symbol}</span>
             </div>
           );

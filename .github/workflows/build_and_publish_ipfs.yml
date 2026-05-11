@@ -11,6 +11,7 @@ permissions:
   contents: read
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   NEXT_PUBLIC_RPC_URL: "https://rpc.tzkt.io/mainnet/"
   NEXT_PUBLIC_API_URL: "https://api.tzkt.io"
   NEXT_PUBLIC_NETWORK_TYPE: "mainnet"

@@ -187,6 +187,11 @@ const Sidebar = ({
   if (!isClient) return null;
 
   const currentContract = state.currentContract ?? "";
+  const walletHref = (page: string) =>
+    currentContract ? `/${currentContract}/${page}` : "/";
+  const walletExternalHref = currentContract
+    ? `https://${PREFERED_NETWORK}.tzkt.io/${currentContract}/balances/`
+    : `https://${PREFERED_NETWORK}.tzkt.io/`;
 
   return (
     <aside
@@ -289,10 +294,10 @@ const Sidebar = ({
 
       <div className="mt-8 flex flex-col space-y-4">
         <Link
-          href={`/${state.currentContract}/dashboard`}
+          href={walletHref("dashboard")}
           className={linkClass(
             path?.includes("/dashboard") ?? false,
-            isLoading
+            isLoading || !currentContract
           )}
           onClick={onClose}
         >
@@ -315,10 +320,10 @@ const Sidebar = ({
           <span>Dashboard</span>
         </Link>
         <a
-          href={`https://${PREFERED_NETWORK}.tzkt.io/${state.currentContract}/balances/`}
+          href={walletExternalHref}
           target="_blank"
           rel="noreferrer"
-          className={linkClass(false, isLoading)}
+          className={linkClass(false, isLoading || !currentContract)}
         >
           <svg
             width="20px"
@@ -390,10 +395,10 @@ const Sidebar = ({
           </svg>
         </a>
         <Link
-          href={`/${state.currentContract}/proposals`}
+          href={walletHref("proposals")}
           className={linkClass(
             path?.includes("/proposals") ?? false,
-            isLoading
+            isLoading || !currentContract
           )}
           onClick={onClose}
         >
@@ -412,10 +417,10 @@ const Sidebar = ({
           <span>Proposals</span>
         </Link>
         <Link
-          href={`/${state.currentContract}/new-proposal`}
+          href={walletHref("new-proposal")}
           className={linkClass(
             path?.includes("/new-proposal") ?? false,
-            !isOwner || isLoading
+            !isOwner || isLoading || !currentContract
           )}
           onClick={onClose}
         >
@@ -434,10 +439,10 @@ const Sidebar = ({
           <span>New proposal</span>
         </Link>
         <Link
-          href={`/${state.currentContract}/fund-wallet`}
+          href={walletHref("fund-wallet")}
           className={linkClass(
             path?.includes("/fund-wallet") ?? false,
-            !state.address || isLoading
+            !state.address || isLoading || !currentContract
           )}
           onClick={onClose}
         >
@@ -576,8 +581,11 @@ const Sidebar = ({
           <span>Fund wallet</span>
         </Link>
         <Link
-          href={`/${state.currentContract}/settings`}
-          className={linkClass(path?.includes("/settings") ?? false, isLoading)}
+          href={walletHref("settings")}
+          className={linkClass(
+            path?.includes("/settings") ?? false,
+            isLoading || !currentContract
+          )}
           onClick={onClose}
         >
           <svg
@@ -595,8 +603,11 @@ const Sidebar = ({
           <span>Settings</span>
         </Link>
         <Link
-          href={`/${state.currentContract}/history`}
-          className={linkClass(path?.includes("/history") ?? false, isLoading)}
+          href={walletHref("history")}
+          className={linkClass(
+            path?.includes("/history") ?? false,
+            isLoading || !currentContract
+          )}
           onClick={onClose}
         >
           <svg
@@ -615,10 +626,13 @@ const Sidebar = ({
         </Link>
 
         <Link
-          href={`/${state.currentContract}/beacon`}
+          href={walletHref("beacon")}
           className={linkClass(
             path?.includes("/beacon") ?? false,
-            isLoading || !isOwner || !hasTzip27Support(version)
+            isLoading ||
+              !isOwner ||
+              !hasTzip27Support(version) ||
+              !currentContract
           )}
           onClick={onClose}
         >

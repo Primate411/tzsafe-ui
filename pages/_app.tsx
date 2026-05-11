@@ -6,7 +6,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect, useRef, useState } from "react";
 import LoginModal from "../components/LoginModal";
 import PoeModal from "../components/PoeModal";
 import Sidebar from "../components/Sidebar";
@@ -38,7 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
   const [isFetching, setIsFetching] = useState(true);
   const [hasSidebar, setHasSidebar] = useState(false);
   const [data, setData] = useState<undefined | string>();
+  const isInitializingBeacon = useRef(false);
   const path = usePathname();
+  const normalizedPath = (path ?? "/").replace(/\/+$/, "") || "/";
   const router = useRouter();
   useEffect(() => {
     if (!path) return;
@@ -53,12 +55,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
     const contracts = Object.keys(state.contracts);
 
-    if ((path === "/" || path === "") && contracts.length > 0) {
+    if (normalizedPath === "/" && contracts.length > 0) {
       const contract = contracts[0];
 
       router.replace(`/${contract}/dashboard`);
       return;
-    } else if (path === "/" || path === "") {
+    } else if (normalizedPath === "/") {
       // Get rid of query in case it comes from beacon
       router.replace("/");
     }
@@ -66,7 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     state.currentContract,
-    path,
+    normalizedPath,
     state.attemptedInitialLogin,
     state.contracts,
   ]);
@@ -159,45 +161,56 @@ export default function App({ Component, pageProps }: AppProps) {
   ]);
   useEffect(() => {
     (async () => {
-      if (state!.beaconWallet === null) {
-        let a = init();
-        dispatch({ type: "init", payload: a });
+      if (state.beaconWallet === null && !isInitializingBeacon.current) {
+        isInitializingBeacon.current = true;
+        try {
+          let a = init();
+          dispatch({ type: "init", payload: a });
 
-        const wallet = new BeaconWallet({
-          name: "TzSafe",
-          network: {
-            type: PREFERED_NETWORK,
-            rpcUrl: RPC_URL,
-          },
-          storage: new LocalStorage("WALLET"),
-        });
-
-        await wallet.client.subscribeToEvent(
-          BeaconEvent.ACTIVE_ACCOUNT_SET,
-          () => {}
-        );
-
-        dispatch!({ type: "beaconConnect", payload: wallet });
-
-        if (state.attemptedInitialLogin) return;
-
-        const activeAccount = await wallet.client.getActiveAccount();
-        if (activeAccount && state?.accountInfo == null) {
-          const userAddress = await wallet.getPKH();
-          const balance = await state?.connection.tz.getBalance(userAddress);
-          dispatch({
-            type: "login",
-            // TODO: FIX
-            //@ts-ignore
-            accountInfo: activeAccount!,
-            address: userAddress,
-            balance: balance!.toString(),
+          const wallet = new BeaconWallet({
+            name: "TzSafe",
+            network: {
+              type: PREFERED_NETWORK,
+              rpcUrl: RPC_URL,
+            },
+            storage: new LocalStorage("WALLET"),
           });
-        } else {
+
+          await wallet.client.subscribeToEvent(
+            BeaconEvent.ACTIVE_ACCOUNT_SET,
+            () => {}
+          );
+
+          dispatch!({ type: "beaconConnect", payload: wallet });
+
+          if (state.attemptedInitialLogin) return;
+
+          const activeAccount = await wallet.client.getActiveAccount();
+          if (activeAccount && state?.accountInfo == null) {
+            const userAddress = await wallet.getPKH();
+            const balance = await state?.connection.tz.getBalance(userAddress);
+            dispatch({
+              type: "login",
+              // TODO: FIX
+              //@ts-ignore
+              accountInfo: activeAccount!,
+              address: userAddress,
+              balance: balance!.toString(),
+            });
+          } else {
+            dispatch({
+              type: "setAttemptedInitialLogin",
+              payload: true,
+            });
+          }
+        } catch (error) {
+          console.error("Failed to initialize wallet", error);
           dispatch({
             type: "setAttemptedInitialLogin",
             payload: true,
           });
+        } finally {
+          isInitializingBeacon.current = false;
         }
       }
     })();
@@ -210,7 +223,7 @@ export default function App({ Component, pageProps }: AppProps) {
       const hasConnectedDapps = Object.values(state.connectedDapps).some(
         dapps => Object.keys(dapps).length > 0
       );
-      const isBeaconRoute = path?.endsWith("/beacon") ?? false;
+      const isBeaconRoute = normalizedPath.endsWith("/beacon");
       const shouldConnectP2P = !!data || isBeaconRoute || hasConnectedDapps;
 
       if (!shouldConnectP2P) return;
@@ -234,18 +247,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
       dispatch!({ type: "p2pConnect", payload: p2pClient });
     })();
-  }, [data, path, state.connectedDapps, state.p2pClient]);
+  }, [data, normalizedPath, state.connectedDapps, state.p2pClient]);
 
   useEffect(() => {
     setHasSidebar(false);
-  }, [path]);
+  }, [normalizedPath]);
 
   const isSidebarHidden =
     Object.values(state.contracts).length === 0 &&
-    (path === "/" ||
-      path === "/new-wallet" ||
-      path === "/import-wallet" ||
-      path === "/address-book");
+    (normalizedPath === "/" ||
+      normalizedPath === "/new-wallet" ||
+      normalizedPath === "/import-wallet" ||
+      normalizedPath === "/address-book");
 
   return (
     <>
@@ -280,15 +293,17 @@ export default function App({ Component, pageProps }: AppProps) {
               <div
                 className={`pb-28 pt-20 ${isSidebarHidden ? "" : "md:pl-72"}`}
               >
-                <button
-                  className="ml-4 mt-4 flex items-center space-x-2 text-zinc-300 md:hidden"
-                  onClick={() => {
-                    setHasSidebar(true);
-                  }}
-                >
-                  <span className="text-xs">Open sidebar</span>
-                  <ArrowRightIcon className="h-4 w-4" />
-                </button>
+                {!isSidebarHidden && (
+                  <button
+                    className="ml-4 mt-4 flex items-center space-x-2 text-zinc-300 md:hidden"
+                    onClick={() => {
+                      setHasSidebar(true);
+                    }}
+                  >
+                    <span className="text-xs">Open sidebar</span>
+                    <ArrowRightIcon className="h-4 w-4" />
+                  </button>
+                )}
 
                 {isFetching || !state.attemptedInitialLogin ? (
                   <div className="mt-12 flex w-full items-center justify-center">

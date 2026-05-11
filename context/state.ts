@@ -209,7 +209,7 @@ function reducer(state: tezosState, action: action): tezosState {
         ...state,
         contracts: contracts,
         aliases: aliases,
-        currentContract: state.currentContract,
+        currentContract: state.currentContract ?? action.payload.address,
         aliasTrie: Trie.fromAliases(Object.entries(aliases)),
       };
 
@@ -291,8 +291,10 @@ function reducer(state: tezosState, action: action): tezosState {
     case "login": {
       const rawStorage = window!.localStorage.getItem(
         `app_state:${action.address}`
-      )!;
-      const storage: storage = JSON.parse(rawStorage);
+      );
+      const storage: storage = rawStorage
+        ? JSON.parse(rawStorage)
+        : { contracts: {}, aliases: {} };
       return {
         ...state,
         ...storage,

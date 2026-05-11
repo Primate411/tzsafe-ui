@@ -26,7 +26,9 @@ const Tooltip = ({
         >
           <TooltipPrimitive.Arrow className="fill-current text-zinc-800" />
           <span
-            className={`{disabled ? 'pointer-events-none' : ''} block max-w-xs text-xs leading-none text-zinc-100`}
+            className={`${
+              disabled ? "pointer-events-none" : ""
+            } block max-w-xs text-xs leading-none text-zinc-100`}
           >
             {text}
           </span>
