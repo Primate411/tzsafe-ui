@@ -210,8 +210,8 @@ export default function App({ Component, pageProps }: AppProps) {
       const hasConnectedDapps = Object.values(state.connectedDapps).some(
         dapps => Object.keys(dapps).length > 0
       );
-      const shouldConnectP2P =
-        !!data || !!state.currentContract || hasConnectedDapps;
+      const isBeaconRoute = path?.endsWith("/beacon") ?? false;
+      const shouldConnectP2P = !!data || isBeaconRoute || hasConnectedDapps;
 
       if (!shouldConnectP2P) return;
 
@@ -234,7 +234,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       dispatch!({ type: "p2pConnect", payload: p2pClient });
     })();
-  }, [data, state.connectedDapps, state.currentContract, state.p2pClient]);
+  }, [data, path, state.connectedDapps, state.p2pClient]);
 
   useEffect(() => {
     setHasSidebar(false);

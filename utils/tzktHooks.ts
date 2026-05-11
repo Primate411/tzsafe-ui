@@ -108,7 +108,7 @@ export const useTzktDefiTokens = (address: string | null) => {
 
 export type Price = {
   value: number; // A float
-  evolution: number; // evolution of XTZ price over 30 days
+  evolution?: number; // evolution of XTZ price over 30 days
 };
 
 /**
@@ -120,32 +120,12 @@ export const useTzktPrice = (currency = "usd") => {
   const [price, setPrice] = useState<Price | null>(null);
   useEffect(() => {
     (async () => {
-      // Let's compute the price evolution
-      const pricesResponse = await fetch(
-        `https://back.tzkt.io/v1/home?quote=${currency}`
-      );
-      if (pricesResponse.status !== 200) return;
-      const pricesJson = await pricesResponse.json();
-      const prices: Array<{ date: string; value: number }> =
-        pricesJson.priceChart;
-      // let's find the oldest and the most recent date
-      prices.sort((price1, price2) => {
-        const date1 = new Date(price1.date);
-        const date2 = new Date(price2.date);
-        return date1.getTime() - date2.getTime();
-      });
-      const first = prices[0];
-      const last = prices[prices.length - 1];
-      const evolution = last.value / first.value;
-
-      // Let's get the current price
-      const headResponse = await fetch("https://back.tzkt.io/v1/head");
+      const headResponse = await fetch(`${TZKT_API_URL}/v1/head`);
       if (headResponse.status !== 200) return;
       const headJson = await headResponse.json();
-      const value = currency === "usd" ? headJson.quoteUsd : headJson.quoteUsd; // by default we returned the usd price
+      const value = currency === "usd" ? headJson.quoteUsd : headJson.quoteUsd;
 
-      // update the hook state
-      setPrice({ value, evolution });
+      setPrice({ value, evolution: undefined });
     })();
   }, [currency]);
   return price;
