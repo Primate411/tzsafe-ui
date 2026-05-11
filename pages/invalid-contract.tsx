@@ -1,7 +1,5 @@
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { PREFERED_NETWORK } from "../context/config";
 
 export default function InvalidContract() {
   const searchParams = useSearchParams();
@@ -19,9 +17,7 @@ export default function InvalidContract() {
         Invalid contract:{" "}
         <a
           className="text-zinc-400 hover:text-white"
-          href={`https://${
-            PREFERED_NETWORK === NetworkType.GHOSTNET ? "ghostnet." : ""
-          }tzkt.io/${address}`}
+          href={`https://tzkt.io/${address}`}
           target="_blank"
           rel="noreferrer"
         >

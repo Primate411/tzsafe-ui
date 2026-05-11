@@ -4,7 +4,6 @@ import {
   char2Bytes,
 } from "@/utils/taquitoCompat";
 import { Parser } from "@taquito/michel-codec";
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import {
   ErrorMessage,
   Field,
@@ -15,11 +14,7 @@ import {
 } from "formik";
 import { useRouter } from "next/router";
 import { FC, useContext, useEffect, useMemo, useRef, useState } from "react";
-import {
-  MODAL_TIMEOUT,
-  PREFERED_NETWORK,
-  PROPOSAL_DURATION_WARNING,
-} from "../context/config";
+import { MODAL_TIMEOUT, PROPOSAL_DURATION_WARNING } from "../context/config";
 import { TZKT_API_URL } from "../context/config";
 import {
   generateDelegateMichelson,
@@ -253,13 +248,7 @@ const SignersForm: FC<{
           You can check it in{" "}
           <a
             className="text-zinc-200 hover:text-zinc-300"
-            href={`https://${
-              PREFERED_NETWORK === NetworkType.MAINNET
-                ? ""
-                : PREFERED_NETWORK === NetworkType.GHOSTNET
-                ? "ghostnet."
-                : `${PREFERED_NETWORK}.`
-            }tzkt.io/${timeoutAndHash[1]}`}
+            href={`https://tzkt.io/${timeoutAndHash[1]}`}
             target="_blank"
             rel="noreferrer"
           >

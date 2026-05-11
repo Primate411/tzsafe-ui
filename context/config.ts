@@ -1,16 +1,14 @@
 import { NetworkType } from "@tezos-x/octez.connect-sdk";
 
 export const RPC_URL =
-  process.env.NEXT_PUBLIC_RPC_URL ?? "https://ghostnet.tezos.marigold.dev/";
+  process.env.NEXT_PUBLIC_RPC_URL ?? "https://rpc.tzkt.io/mainnet/";
 export const TZKT_API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://api.ghostnet.tzkt.io";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://api.tzkt.io";
 export const IPFS = "https://ipfs-proxy.gcp.marigold.dev";
 export const IPFS_NODE = "gateway.pinata.cloud";
 export const PREFERED_NETWORK: NetworkType =
   process.env.NEXT_PUBLIC_NETWORK_TYPE === "mainnet"
     ? NetworkType.MAINNET
-    : process.env.NEXT_PUBLIC_NETWORK_TYPE === "ghostnet"
-    ? NetworkType.GHOSTNET
     : NetworkType.CUSTOM;
 
 export const WERT_URL =

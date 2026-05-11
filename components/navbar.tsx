@@ -51,8 +51,6 @@ const NavBar = (_: React.PropsWithChildren) => {
                   <p className="ml-4 mt-1 text-xs">
                     {PREFERED_NETWORK === NetworkType.MAINNET
                       ? "Mainnet"
-                      : PREFERED_NETWORK === NetworkType.GHOSTNET
-                      ? "Ghostnet"
                       : "Custom"}
                   </p>
                 </div>

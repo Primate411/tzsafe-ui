@@ -4,7 +4,6 @@ import {
   validateAddress,
 } from "@/utils/taquitoCompat";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import BigNumber from "bignumber.js";
 import {
   Field,
@@ -24,7 +23,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { MODAL_TIMEOUT, PREFERED_NETWORK } from "../context/config";
+import { MODAL_TIMEOUT } from "../context/config";
 import { AppStateContext, contractStorage } from "../context/state";
 import { tezToMutez } from "../utils/tez";
 import { VersionedApi } from "../versioned/apis";
@@ -393,13 +392,7 @@ function TransferForm(
           You can check it in{" "}
           <a
             className="text-zinc-200 hover:text-zinc-300"
-            href={`https://${
-              PREFERED_NETWORK === NetworkType.MAINNET
-                ? ""
-                : PREFERED_NETWORK === NetworkType.GHOSTNET
-                ? "ghostnet."
-                : `${PREFERED_NETWORK}.`
-            }tzkt.io/${timeoutAndHash[1]}`}
+            href={`https://tzkt.io/${timeoutAndHash[1]}`}
             target="_blank"
             rel="noreferrer"
           >

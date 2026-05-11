@@ -1,6 +1,5 @@
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import WertWidget from "@wert-io/widget-initializer";
-import { PREFERED_NETWORK, WERT_ID, WERT_URL } from "./config";
+import { WERT_ID, WERT_URL } from "./config";
 
 export const makeWertWidget = ({
   wallet,
@@ -9,8 +8,7 @@ export const makeWertWidget = ({
   wallet: string;
   onSuccess: (txId: string) => void;
 }) => {
-  const network =
-    PREFERED_NETWORK === NetworkType.MAINNET ? "tezos" : "ghostnet";
+  const network = "tezos";
   return new WertWidget({
     address: wallet,
     partner_id: WERT_ID,

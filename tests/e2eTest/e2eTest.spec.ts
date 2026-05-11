@@ -9,7 +9,6 @@ import test_suit_0_3_4 from "./v0.3.4";
 vi.mock("@tezos-x/octez.connect-sdk", () => ({
   NetworkType: {
     MAINNET: "mainnet",
-    GHOSTNET: "ghostnet",
   },
 }));
 

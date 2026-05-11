@@ -15,8 +15,7 @@
     "prepare": "husky install",
     "dev:test": "vitest",
     "test": "vitest run",
-    "check": "tsc",
-    "get_tez": "npx @oxheadalpha/get-tez tz1Rwf9UAGpsNjE6tFGJpxPKRunteiQT7XZF --amount 20 --network ghostnet"
+    "check": "tsc"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown pages/ components/ context/ types/ versioned/ utils/"

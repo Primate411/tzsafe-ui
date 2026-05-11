@@ -1,11 +1,10 @@
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import * as Switch from "@radix-ui/react-switch";
-import { NetworkType } from "@tezos-x/octez.connect-sdk";
 import BigNumber from "bignumber.js";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useContext, useState, useMemo } from "react";
-import { MODAL_TIMEOUT, PREFERED_NETWORK } from "../context/config";
+import { MODAL_TIMEOUT } from "../context/config";
 import { PROPOSAL_DURATION_WARNING } from "../context/config";
 import { AppStateContext } from "../context/state";
 import { CustomView, customViewMatchers } from "../dapps";
@@ -109,13 +108,7 @@ function ProposalSignForm({
           You can check it in{" "}
           <a
             className="text-zinc-200 hover:text-zinc-300"
-            href={`https://${
-              PREFERED_NETWORK === NetworkType.MAINNET
-                ? ""
-                : PREFERED_NETWORK === NetworkType.GHOSTNET
-                ? "ghostnet."
-                : `${PREFERED_NETWORK}.`
-            }tzkt.io/${timeoutAndHash[1]}`}
+            href={`https://tzkt.io/${timeoutAndHash[1]}`}
             target="_blank"
             rel="noreferrer"
           >

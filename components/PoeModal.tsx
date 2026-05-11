@@ -8,7 +8,6 @@ import { tzip16 } from "@taquito/tzip16";
 import {
   AppMetadata,
   BeaconErrorType,
-  NetworkType,
   OperationRequestOutput,
   ProofOfEventChallengeRequestOutput,
   SignPayloadRequest,
@@ -19,7 +18,6 @@ import BigNumber from "bignumber.js";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
 import { Event } from "../context/P2PClient";
-import { PREFERED_NETWORK } from "../context/config";
 import {
   generateDelegateMichelson,
   generateExecuteContractMichelson,
@@ -502,11 +500,7 @@ const PoeModal = () => {
                       validated. You can check it in{" "}
                       <a
                         className="text-zinc-200 hover:text-zinc-300"
-                        href={`https://${
-                          PREFERED_NETWORK === NetworkType.GHOSTNET
-                            ? "ghostnet."
-                            : ""
-                        }tzkt.io/${timeoutAndHash[1]}`}
+                        href={`https://tzkt.io/${timeoutAndHash[1]}`}
                         target="_blank"
                         rel="noreferrer"
                       >
