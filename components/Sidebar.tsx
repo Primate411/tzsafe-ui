@@ -62,7 +62,7 @@ const SelectedItem = ({
   disableCopy = false,
 }: selectItemProps) => {
   const formattedBalance = useMemo(() => {
-    return new BigNumber(balance ?? 0).div(10 ** 6, 10);
+    return new BigNumber(balance ?? "0").dividedBy("1000000");
   }, [balance]);
 
   return (
