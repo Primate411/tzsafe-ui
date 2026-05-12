@@ -654,7 +654,7 @@ const Sidebar = ({
         </Link>
 
         <a
-          href="https://docs.tzsafe.marigold.dev"
+          href="https://docs.tzsafe.org/"
           target="_blank"
           rel="noreferrer"
           className={linkClass(false, isLoading)}

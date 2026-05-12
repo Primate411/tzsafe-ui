@@ -1,5 +1,5 @@
 import { Wallet } from "@taquito/taquito";
-import fromIpfs from "../context/fromIpfs";
+import buildContractMetadata from "../context/contractMetadata";
 import { CONTRACTS } from "../context/version";
 import { version } from "../types/display";
 
@@ -17,7 +17,7 @@ export default async function deployTzSafe(
     );
 
   const [deploying_contract, metadata] = deploying_files;
-  const metablob = await fromIpfs(metadata);
+  const metablob = await buildContractMetadata(metadata);
   const deploy = await wallet
     .originate({
       code: deploying_contract,

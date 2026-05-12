@@ -6,8 +6,8 @@ export const metadata = {
   license: {
     name: "MIT",
   },
-  authors: ["Marigold <contract@marigold.dev>"],
-  homepage: "https://www.marigold.dev/tzsafe",
+  authors: ["Marigold", "Primate411"],
+  homepage: "https://tzsafe.tez.page/",
   source: {
     tools: "cameligo",
     location: "https://github.com/marigold-dev/tzsafe/",

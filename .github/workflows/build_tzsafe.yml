@@ -106,9 +106,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/marigold-dev/tzsafe:stable
-            ghcr.io/marigold-dev/tzsafe:${{ steps.tag_version.outputs.new_version}}-release
-            ghcr.io/marigold-dev/tzsafe:${{ steps.vars.outputs.date }}-${{ steps.vars.outputs.sha_short }}-${{ steps.tag_version.outputs.new_version}}-release
+            ghcr.io/primate411/tzsafe:stable
+            ghcr.io/primate411/tzsafe:${{ steps.tag_version.outputs.new_version}}-release
+            ghcr.io/primate411/tzsafe:${{ steps.vars.outputs.date }}-${{ steps.vars.outputs.sha_short }}-${{ steps.tag_version.outputs.new_version}}-release
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
