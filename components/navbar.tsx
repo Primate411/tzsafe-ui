@@ -59,8 +59,9 @@ const NavBar = (_: React.PropsWithChildren) => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 <LinkComponent path="/address-book" text={"Address book"} />
-                <LinkComponent path="/new-wallet" text={"New wallet"} />
+                <LinkComponent path="/new-wallet" text={"Legacy wallet"} />
                 <LinkComponent path="/import-wallet" text={"Import wallet"} />
+                <LinkComponent path="/migration" text={"Migration"} />
               </div>
             </div>
           </div>
@@ -215,7 +216,12 @@ const NavBar = (_: React.PropsWithChildren) => {
           <LinkComponent
             onClick={closeMenu}
             path="/new-wallet"
-            text={"New wallet"}
+            text={"Legacy wallet"}
+          />
+          <LinkComponent
+            onClick={closeMenu}
+            path="/migration"
+            text={"Migration"}
           />
           <LinkComponent
             onClick={closeMenu}

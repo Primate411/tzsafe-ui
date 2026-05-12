@@ -1,4 +1,5 @@
 import { Defi, Price } from "../../utils/tzktHooks";
+import LegacyStewardshipNotice from "../LegacyStewardshipNotice";
 import Assets from "./assets";
 import Balance from "./balance";
 import Donut from "./donut";
@@ -20,6 +21,9 @@ const Dashboard = ({ balance, tokens, price }: DashboardProps) => {
 
       <main className="min-h-fit grow">
         <div className="mx-auto min-h-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <LegacyStewardshipNotice compact />
+          </div>
           <div
             className={`grid w-full grid-cols-1 gap-8 rounded border-b border-zinc-900 bg-zinc-800 px-6 py-4 text-white md:grid-cols-1 lg:grid-cols-2`}
           >

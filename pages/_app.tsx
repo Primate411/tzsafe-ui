@@ -258,6 +258,7 @@ export default function App({ Component, pageProps }: AppProps) {
     (normalizedPath === "/" ||
       normalizedPath === "/new-wallet" ||
       normalizedPath === "/import-wallet" ||
+      normalizedPath === "/migration" ||
       normalizedPath === "/address-book");
 
   return (

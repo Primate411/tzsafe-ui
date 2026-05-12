@@ -5,6 +5,7 @@ TzSafe is a website to interact with multi-signatures wallets. The goal is to ha
 - This fork is maintained by Primate411 after the original Marigold-hosted service was retired.
 - Documentation can be found [here](https://docs.tzsafe.org/).
 - Mainnet version of this frontend UI can be found on [tzsafe.tez.page](https://tzsafe.tez.page/).
+- TzSafe is now maintained as a legacy KT1 wallet care tool. For new multisig setups, prefer protocol-native Tezos multisig accounts when the signer group and tooling are ready.
 
 ## How to develop ?
 
