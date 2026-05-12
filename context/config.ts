@@ -1,7 +1,7 @@
 import { NetworkType } from "@tezos-x/octez.connect-sdk";
 
 export const RPC_URL =
-  process.env.NEXT_PUBLIC_RPC_URL ?? "https://rpc.tzkt.io/mainnet/";
+  process.env.NEXT_PUBLIC_RPC_URL ?? "https://us.rpc.tez.capital";
 export const TZKT_API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "https://api.tzkt.io";
 export const IPFS = "https://ipfs-proxy.gcp.marigold.dev";

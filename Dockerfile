@@ -21,11 +21,11 @@ COPY --from=deps /app/node_modules ./node_modules
 
 COPY . .
 
-ARG PUBLIC_RPC_URL="https://rpc.tzkt.io/mainnet/"
+ARG PUBLIC_RPC_URL="https://us.rpc.tez.capital"
 ARG PUBLIC_API_URL="https://api.tzkt.io"
 ARG PUBLIC_NETWORK_TYPE="mainnet"
 
-RUN echo -en "NEXT_PUBLIC_RPC_URL=$PUBLIC_RPC_URL/\nNEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL\NEXT_PUBLIC_NETWORK_TYPE=$PUBLIC_NETWORK_TYPE" > .env.local;
+RUN printf "NEXT_PUBLIC_RPC_URL=%s\nNEXT_PUBLIC_API_URL=%s\nNEXT_PUBLIC_NETWORK_TYPE=%s\n" "$PUBLIC_RPC_URL" "$PUBLIC_API_URL" "$PUBLIC_NETWORK_TYPE" > .env.local;
 
 RUN npm run build
 
@@ -33,4 +33,3 @@ FROM nginx:alpine
 COPY --from=builder /app/out/ /usr/share/nginx/html
 
 EXPOSE 80
-

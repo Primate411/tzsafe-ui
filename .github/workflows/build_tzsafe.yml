@@ -5,12 +5,10 @@ on:
   push:
     branches:
       - dev
-      - ghostnet
       - mainnet
   pull_request:
     branches:
       - dev
-      - ghostnet
       - mainnet
   workflow_dispatch:
     inputs:
@@ -44,15 +42,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      # Testing
-      - name: Testing code
-        if: ${{ github.ref == 'refs/heads/ghostnet' }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18.x"
-          run: |
-            npm ci
-            npm t
       # Build testing
       - name: Testing docker build
         if: ${{ github.event_name == 'pull_request' && github.ref == 'refs/heads/dev' }}
@@ -63,9 +52,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            PUBLIC_RPC_URL=https://ghostnet.tezos.marigold.dev/
-            PUBLIC_API_URL=https://api.ghostnet.tzkt.io
-            PUBLIC_NETWORK_TYPE=ghostnet
+            PUBLIC_RPC_URL=https://us.rpc.tez.capital
+            PUBLIC_API_URL=https://api.tzkt.io
+            PUBLIC_NETWORK_TYPE=mainnet
       # tagging
       - name: Set tagging variables
         if: ${{ github.ref != 'refs/heads/dev' }}
@@ -110,22 +99,6 @@ jobs:
         run: git tag ${{ steps.tag_version.outputs.new_version}} && git push origin ${{ steps.tag_version.outputs.new_version}}
 
       # building and pushing docker images
-      - name: Build and push staging docker image
-        if: ${{ github.ref == 'refs/heads/ghostnet' }}
-        uses: docker/build-push-action@v4
-        with:
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ghcr.io/marigold-dev/tzsafe:staging
-            ghcr.io/marigold-dev/tzsafe:${{ steps.vars.outputs.date }}-${{ steps.vars.outputs.sha_short }}-staging
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            PUBLIC_RPC_URL=https://ghostnet.tezos.marigold.dev/
-            PUBLIC_API_URL=https://api.ghostnet.tzkt.io
-            PUBLIC_NETWORK_TYPE=ghostnet
-
       - name: Build and push release docker image
         if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/mainnet' }}
         uses: docker/build-push-action@v4
@@ -139,6 +112,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            PUBLIC_RPC_URL=https://rpc.tzkt.io/mainnet/
+            PUBLIC_RPC_URL=https://us.rpc.tez.capital
             PUBLIC_API_URL=https://api.tzkt.io
             PUBLIC_NETWORK_TYPE=mainnet

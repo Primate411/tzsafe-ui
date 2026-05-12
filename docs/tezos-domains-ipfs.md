@@ -5,13 +5,15 @@ This fork is configured to build a static TzSafe frontend for Tezos Domains host
 ## Build
 
 ```sh
-NEXT_PUBLIC_RPC_URL=https://rpc.tzkt.io/mainnet/ \
+NEXT_PUBLIC_RPC_URL=https://us.rpc.tez.capital \
 NEXT_PUBLIC_API_URL=https://api.tzkt.io \
 NEXT_PUBLIC_NETWORK_TYPE=mainnet \
 npm run build
 ```
 
 The static export is written to `out/`.
+
+Use `https://eu.rpc.tez.capital` instead if the EU endpoint is preferable for your hosting location.
 
 ## Host on GitHub Pages
 

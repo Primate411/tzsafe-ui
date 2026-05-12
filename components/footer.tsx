@@ -33,9 +33,15 @@ const Footer = ({
             Documentation
           </a>
         </div>
-        <a href="https://tzkt.io/" target="_blank" rel="noreferrer">
-          Powered by TzKT API
-        </a>
+        <div className="flex flex-col items-center gap-2 md:flex-row">
+          <a href="https://tzkt.io/" target="_blank" rel="noreferrer">
+            Powered by TzKT API
+          </a>
+          <span className="hidden text-zinc-500 md:inline">·</span>
+          <a href="https://tez.capital/" target="_blank" rel="noreferrer">
+            RPC by Tez Capital
+          </a>
+        </div>
       </div>
     </footer>
   );

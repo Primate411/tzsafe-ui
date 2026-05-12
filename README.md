@@ -39,12 +39,12 @@ docker run -p 8080:80 tzsafe
 When building the application you can specify which node and which network you want to use:
 
 ```bash
-docker build --build-arg="PUBLIC_RPC_URL=https://rpc.tzkt.io/mainnet" -t tzsafe .
+docker build --build-arg="PUBLIC_RPC_URL=https://us.rpc.tez.capital" -t tzsafe .
 ```
 
 You can override:
 
-- PUBLIC_RPC_URL: the URL of the node you want to use (default: https://rpc.tzkt.io/mainnet/)
+- PUBLIC_RPC_URL: the URL of the node you want to use (default: https://us.rpc.tez.capital; https://eu.rpc.tez.capital is also available)
 - PUBLIC_API_URL: the URL of a tzkt instance (default: https://api.tzkt.io)
 - PUBLIC_NETWORK_TYPE: the type of the network (default: mainnet)
 
