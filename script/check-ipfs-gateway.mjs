@@ -73,7 +73,7 @@ async function main() {
       !origin.hash &&
       !origin.username &&
       !origin.password,
-    "Use an HTTP(S) origin, such as https://<CID>.ipfs.dweb.link/; path gateways are unsupported"
+    "Use an HTTP(S) origin on a working subdomain gateway, such as https://<CID>.ipfs.<gateway-host>/; path gateways are unsupported"
   );
   const { root, redirects } = await validateIpfsExport(
     process.argv[3] ?? "out-ipfs"

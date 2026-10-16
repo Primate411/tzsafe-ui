@@ -51,11 +51,11 @@ Pinning success alone does not establish that a gateway can serve the release.
 ## Validate before changing the live domain
 
 Use the exact published CID and the matching export downloaded from the same
-workflow run. A gateway such as `https://<CID>.ipfs.dweb.link/` provides an origin
-at which to run:
+workflow run. Use an available recursive subdomain gateway, substituting its
+actual hostname and the published CID below:
 
 ```sh
-npm run check:ipfs:gateway -- https://<CID>.ipfs.dweb.link/ out-ipfs
+npm run check:ipfs:gateway -- https://<CID>.ipfs.<gateway-host>/ out-ipfs
 ```
 
 This checks exported page/build identity, clean and trailing-slash routes,
@@ -74,10 +74,16 @@ domain when available before moving the live domain.
 
 If `ipfs://<CID>/` delivery cannot resolve the routes, Tezos Domains also supports
 an HTTPS content URL. A tested CID origin such as
-`https://<CID>.ipfs.dweb.link/` can be used in **Serve content** mode. This keeps
+`https://<CID>.ipfs.<gateway-host>/` can be used in **Serve content** mode. This keeps
 `tzsafe.tez.page` in the address bar while proxying the IPFS gateway; it adds a
 dependency on that gateway and must pass the same checks. This is a content URL,
 not a redirect URL.
+
+The gateway must return the actual files to server-side HTTP requests. A
+service-worker gateway that requires browser JavaScript cannot serve as the
+content-server's upstream. In particular, do not assume old `dweb.link` examples
+remain usable: its [gateway retirement notice](https://gatewaychanges.ipfs.io/)
+announces the end of recursive HTTP service on September 21, 2026.
 
 Inspect `Cache-Control` on the domain's HTML responses as well as its assets.
 Immutable caching suitable for a CID URL is unsuitable for mutable domain HTML:
