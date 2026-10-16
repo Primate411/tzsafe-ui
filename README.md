@@ -59,6 +59,53 @@ npm run start:mainnet
 
 You can override the variable by editing the file `/config/.env.mainnet`
 
+## IPFS test builds
+
+```sh
+npm run build:ipfs
+npm run check:ipfs
+```
+
+This produces a mainnet static build in `out-ipfs/`, with no `/tzsafe-ui`
+base path. It does not upload files, deploy GitHub Pages, or update domain records.
+The existing GitHub Pages build still uses `out/` and its configured base path.
+Next shares its `.next/` build cache between these targets, so run builds sequentially.
+
+The IPFS build generates `_redirects` from the exported Next pages. Static URLs
+such as `/import-wallet` and dynamic URLs such as `/KT1…/dashboard` return the
+corresponding page with HTTP 200. Next then reads the wallet address from the
+browser URL. Both trailing-slash forms are covered; missing assets retain HTTP 404.
+This avoids relying on GitHub Pages' custom 404 recovery.
+
+**Gateway requirement:** use a CID subdomain or DNSLink gateway supporting
+[IPFS `_redirects`](https://docs.ipfs.tech/how-to/websites-on-ipfs/redirects-and-custom-404s/)
+(Kubo 0.16+). A plain `/ipfs/<CID>/` path gateway is not supported by this root-path
+build. Before changing `tzsafe.tez`, verify that the tez.page content server's
+upstream gateway supports these rewrites. Its checked-in source alone does not
+establish the current production gateway configuration.
+
+To test with Kubo, use a separate local IPFS repository and an offline daemon,
+then add the contents without publishing them to the network:
+
+```sh
+# Set IPFS_PATH to your isolated test repository first.
+ipfs add -r --cid-version=1 --quieter out-ipfs
+# Open http://<returned-CID>.ipfs.localhost:<gateway-port>/
+npm run check:ipfs:gateway -- http://<returned-CID>.ipfs.localhost:<gateway-port>/
+```
+
+The gateway check verifies HTML/build identity, clean and trailing-slash routes,
+query-bearing requests, routing rules, and missing-path status. Also test in a
+browser: open a wallet dashboard directly, refresh it, visit Settings/Proposals/
+History, use back/forward, and reconnect your wallet. A new origin has separate
+browser storage; existing saved wallets and address-book entries are not copied.
+Preparing this build does not implement storage migration.
+
+When a remote test pin is wanted, `PINATA_JWT` plus `npm run deploy:ipfs` uploads
+the validated `out-ipfs/` directory and prints its CID. That command makes content
+publicly retrievable but does not change the live site or Tezos Domains records.
+The IPFS GitHub workflow builds on pushes and only pins on manual dispatch.
+
 ## Sandbox
 
 Sandbox enables us to locally run Tezos-node and Tzkt. There are two modes: stateful and stateless. In stateful mode, the data of Tezos-node and the database of Tzkt are preserved when docker compose stops, while in stateless mode, both start from the genesis block.

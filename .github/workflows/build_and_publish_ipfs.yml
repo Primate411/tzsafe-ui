@@ -33,13 +33,13 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build static app
-        run: npm run build
+        run: npm run build:ipfs
 
       - name: Upload static export artifact
         uses: actions/upload-artifact@v4
         with:
           name: tzsafe-static-export
-          path: out
+          path: out-ipfs
 
   publish-ipfs:
     if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -58,11 +58,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tzsafe-static-export
-          path: out
+          path: out-ipfs
 
       - name: Upload to IPFS through Pinata
         id: ipfs
-        run: node script/upload-ipfs.mjs out
+        run: node script/upload-ipfs.mjs out-ipfs
         env:
           PINATA_JWT: ${{ secrets.PINATA_JWT }}
           PINATA_NAME: tzsafe-ui

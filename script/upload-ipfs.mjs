@@ -1,7 +1,8 @@
 import { appendFile, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
+import { validateIpfsExport } from "./ipfs-export.mjs";
 
-const root = process.argv[2] ?? "out";
+const root = process.argv[2] ?? "out-ipfs";
 const pinataJwt = process.env.PINATA_JWT;
 
 if (!pinataJwt) {
@@ -27,17 +28,23 @@ if (!rootStats.isDirectory()) {
   throw new Error(`${root} must be a directory produced by next build`);
 }
 
+await validateIpfsExport(root);
+
 const files = await collectFiles(root);
 if (files.length === 0) {
   throw new Error(`${root} is empty`);
 }
+
+// Pinata's folder upload format uses a common top-level folder for every file.
+// The returned CID represents that folder; adding wrapWithDirectory would add
+// another level and break origin-root asset paths.
+const directoryName = path.basename(path.resolve(root));
 
 const form = new FormData();
 form.append(
   "pinataOptions",
   JSON.stringify({
     cidVersion: 1,
-    wrapWithDirectory: true,
   })
 );
 form.append(
@@ -57,7 +64,7 @@ for (const filePath of files) {
   const relativePath = path.relative(root, filePath).split(path.sep).join("/");
   const bytes = await readFile(filePath);
 
-  form.append("file", new Blob([bytes]), relativePath);
+  form.append("file", new Blob([bytes]), `${directoryName}/${relativePath}`);
 }
 
 const response = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
@@ -75,6 +82,9 @@ if (!response.ok) {
 
 const result = JSON.parse(body);
 const cid = result.IpfsHash;
+if (typeof cid !== "string" || !/^[a-zA-Z0-9]{46,}$/.test(cid)) {
+  throw new Error("Pinata did not return a valid content identifier");
+}
 const contentUrl = `ipfs://${cid}/`;
 
 console.log(`CID=${cid}`);
@@ -82,7 +92,10 @@ console.log(`Content URL=${contentUrl}`);
 console.log("Tezos Domains URL=https://tzsafe.tez.page/");
 
 if (process.env.GITHUB_OUTPUT) {
-  await appendFile(process.env.GITHUB_OUTPUT, `cid=${cid}\ncontent_url=${contentUrl}\n`);
+  await appendFile(
+    process.env.GITHUB_OUTPUT,
+    `cid=${cid}\ncontent_url=${contentUrl}\n`
+  );
 }
 
 if (process.env.GITHUB_STEP_SUMMARY) {
